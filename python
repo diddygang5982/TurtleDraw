@@ -1,17 +1,60 @@
 import turtle
 import math
 
+def draw_title_banner(artist):
+    """Draw a title banner at the top of the screen"""
+    artist.penup()
+    artist.goto(0, 190)
+    artist.color("white")
+    artist.pendown()
+    artist.begin_fill()
+    for _ in range(2):
+        artist.forward(220)
+        artist.right(90)
+        artist.forward(40)
+        artist.right(90)
+    artist.end_fill()
+    artist.penup()
+    artist.goto(0, 180)
+    artist.color("navy")
+    artist.write("Turtle Drawing App", align="center", font=("Arial", 16, "bold"))
+
 def main():
     # Initialize turtle
     screen = turtle.Screen()
     screen.setup(450, 450)
-    screen.title("Turtle Drawing")
+    screen.bgcolor("lightgray")  # Set background color
+    screen.title("Turtle Drawing App")
     
+    # Create a turtle for drawing the title banner
+    banner_turtle = turtle.Turtle()
+    banner_turtle.hideturtle()
+    banner_turtle.speed(0)
+    draw_title_banner(banner_turtle)
+    
+    # Create the main drawing turtle
     artist = turtle.Turtle()
     artist.speed(0)  # Maximum speed
+    artist.pensize(2)  # Slightly thicker lines for better visibility
+    
+    # Draw coordinate axes for reference (optional)
+    axis = turtle.Turtle()
+    axis.hideturtle()
+    axis.speed(0)
+    axis.penup()
+    axis.goto(-200, 0)
+    axis.pendown()
+    axis.goto(200, 0)
+    axis.penup()
+    axis.goto(0, -200)
+    axis.pendown()
+    axis.goto(0, 200)
+    axis.penup()
     
     # Ask for input file
-    filename = input("Enter the name of the input file: ")
+    filename = turtle.textinput("Input", "Enter the name of the input file:")
+    if not filename:
+        return  # User canceled the input
     
     try:
         with open(filename, 'r') as file:
@@ -52,14 +95,20 @@ def main():
             # Display total distance at bottom right
             artist.penup()
             artist.goto(180, -200)
+            artist.color("black")
             artist.write(f"Total distance: {total_distance:.2f}", align="right", font=("Arial", 10, "normal"))
             
     except FileNotFoundError:
-        print(f"Error: File '{filename}' not found.")
-        return
+        # Show error message on screen
+        error_turtle = turtle.Turtle()
+        error_turtle.hideturtle()
+        error_turtle.penup()
+        error_turtle.color("red")
+        error_turtle.goto(0, -50)
+        error_turtle.write(f"Error: File '{filename}' not found.", align="center", font=("Arial", 12, "bold"))
     
     # Wait for user to press enter before closing
-    input("Press Enter to close the window...")
+    turtle.textinput("Finished", "Drawing complete. Press OK to close.")
     turtle.bye()
 
 if __name__ == "__main__":
